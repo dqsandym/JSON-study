@@ -1,4 +1,5 @@
 JSON是一种本文格式，用来方便交换数据，相当于一个中转站
+本项目做的是  手写的递归下降解析器（recursive descent parser）
 
 比如一个动态网页想从服务器获得数据时，服务器从数据库查找数据，然后把数据转换成 JSON 文本格式，网页的脚本代码就可以把此 JSON 文本解析为内部的数据结构去使用。
 
@@ -11,11 +12,22 @@ JSON 是树状结构，而 JSON 只包含 6 种数据类型：
   array: 表示为 [ ... ]
   object: 表示为 { ... }
   
+JSON文本格式： ws value ws
+
+  JSON-text = ws value ws
+  ws = *(%x20 / %x09 / %x0A / %x0D)
+  value = null / false / true 
+  null  = "null"
+  false = "false"
+  true  = "true"
   
-JSON 库，主要是完成 3 个需求：
+ 第一行：JSON 文本由 3 部分组成，首先是空白（whitespace），接着是一个值，最后是空白。
+ 第二行：所谓空白，是由零或多个空格符（space U+0020）、制表符（tab U+0009）、换行符（LF U+000A）、回车符（CR U+000D）所组成。当中 %xhh 表示以 16 进制表示的字符，/ 是多选一，* 是零或多个，( ) 用于分组。
+ 第三行：现时的值只可以是 null、false 或 true，它们分别有对应的字面值（literal）。
+
+
+因此，JSON 库，主要是完成 3 个需求：
 
   1、把 JSON 文本解析为一个树状数据结构（parse）。
   2、提供接口访问该数据结构（access）。
   3、把数据结构转换成 JSON 文本（stringify）。
-  
- 本项目做的是  手写的递归下降解析器（recursive descent parser）
